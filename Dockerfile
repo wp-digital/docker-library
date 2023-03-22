@@ -122,7 +122,8 @@ ENV WP_CLI_ALLOW_ROOT=1
 RUN set -eux; \
     curl -o newrelic.tar.gz -L "https://download.newrelic.com/php_agent/archive/${NEWRELIC_PHP_AGENT}/newrelic-php5-${NEWRELIC_PHP_AGENT}-linux.tar.gz"; \
     \
-    tar -xzf newrelic.tar.gz -C /tmp; \
+    mkdir -p /tmp/newrelic; \
+    tar -xzf newrelic.tar.gz -C /tmp/newrelic; \
     rm newrelic.tar.gz; \
     \
     export NR_INSTALL_USE_CP_NOT_LN=1; \
