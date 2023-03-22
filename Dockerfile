@@ -1,4 +1,7 @@
-FROM php:8.1-fpm-alpine
+ARG PHP_VERSION
+ARG NEWRELIC_PHP_AGENT
+
+FROM php:${PHP_VERSION}-fpm-alpine
 
 # persistent dependencies
 RUN set -eux; \
@@ -111,13 +114,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x /usr/local/bin/wp
 # allow wp-cli to be run as root
-ENV WP_CLI_ALLOW_ROOT 1
+ENV WP_CLI_ALLOW_ROOT=1
 
 # install New Relic
 RUN set -eux; \
-    version='10.7.0.319'; \
-    \
-    curl -o newrelic.tar.gz -L "https://download.newrelic.com/php_agent/archive/${version}/newrelic-php5-${version}-linux.tar.gz"; \
+    curl -o newrelic.tar.gz -L "https://download.newrelic.com/php_agent/archive/${NEWRELIC_PHP_AGENT}/newrelic-php5-${NEWRELIC_PHP_AGENT}-linux.tar.gz"; \
     \
     tar -xzf newrelic.tar.gz -C /tmp; \
     rm newrelic.tar.gz; \
@@ -127,11 +128,6 @@ RUN set -eux; \
     /tmp/newrelic/newrelic-install install; \
     \
     rm -rf /tmp/newrelic
-
-ENV WWW_ROOT=/usr/src/html
-
-RUN mkdir -p ${WWW_ROOT} && chown www-data:www-data ${WWW_ROOT} -R
-RUN echo "" > ${WWW_ROOT}/.env
 
 COPY docker-entrypoint.sh /usr/local/bin/
 

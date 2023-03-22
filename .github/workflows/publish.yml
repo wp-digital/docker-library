@@ -1,0 +1,41 @@
+name: Create and publish a Docker image
+
+on:
+  workflow_dispatch:
+    inputs:
+      PHPVersion:
+        description: 'PHP version'
+        required: true
+        default: '8.2'
+      NewRelicPHPAgent:
+        description: 'New Relic PHP agent'
+        required: true
+        default: '10.7.0.319'
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image for PHP ${{ github.event.inputs.PHPVersion }} with New Relic PHP agent ${{ github.event.inputs.NewRelicPHPAgent }}
+        uses: docker/build-push-action@v4
+        with:
+          context: ./php
+          push: true
+          tags: ghcr.io/${{ github.repository }}/php:${{ github.event.inputs.PHPVersion }}-newrelic-${{ github.event.inputs.NewRelicPHPAgent }}
+          build-args: |
+            PHP_VERSION=${{ github.event.inputs.PHPVersion }}
+            NEWRELIC_PHP_AGENT_VERSION=${{ github.event.inputs.NewRelicPHPAgent }}
