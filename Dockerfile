@@ -122,15 +122,14 @@ ENV WP_CLI_ALLOW_ROOT=1
 RUN set -eux; \
     curl -o newrelic.tar.gz -L "https://download.newrelic.com/php_agent/archive/${NEWRELIC_PHP_AGENT}/newrelic-php5-${NEWRELIC_PHP_AGENT}-linux.tar.gz"; \
     \
-    mkdir -p /tmp/newrelic; \
-    tar -xzf newrelic.tar.gz -C /tmp/newrelic; \
+    tar -xzf newrelic.tar.gz -C /tmp; \
     rm newrelic.tar.gz; \
     \
     export NR_INSTALL_USE_CP_NOT_LN=1; \
     export NR_INSTALL_SILENT=1; \
-    /tmp/newrelic/newrelic-install install; \
+    /tmp/newrelic-php5-*/newrelic-install install; \
     \
-    rm -rf /tmp/newrelic
+    rm -rf /tmp/newrelic-php5-*
 
 COPY docker-entrypoint.sh /usr/local/bin/
 
