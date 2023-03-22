@@ -1,7 +1,8 @@
 ARG PHP_VERSION
-ARG NEWRELIC_PHP_AGENT
 
 FROM php:${PHP_VERSION}-fpm-alpine
+
+ARG NEWRELIC_PHP_AGENT
 
 # persistent dependencies
 RUN set -eux; \
