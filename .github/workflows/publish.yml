@@ -38,4 +38,4 @@ jobs:
           tags: ghcr.io/${{ github.repository }}/php:${{ github.event.inputs.PHPVersion }}-newrelic-${{ github.event.inputs.NewRelicPHPAgent }}
           build-args: |
             PHP_VERSION=${{ github.event.inputs.PHPVersion }}
-            NEWRELIC_PHP_AGENT_VERSION=${{ github.event.inputs.NewRelicPHPAgent }}
+            NEWRELIC_PHP_AGENT=${{ github.event.inputs.NewRelicPHPAgent }}
