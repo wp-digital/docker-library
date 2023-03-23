@@ -1,15 +1,18 @@
 #!/bin/sh
 set -e
 
-if [ -n "${NEWRELIC_LICENSE}" ] && [ -n "${NEWRELIC_DAEMON_ADDRESS}" ]; then
+if [ -n "${NEWRELIC_LICENSE}" ]; then
     { \
         echo "extension = newrelic.so"; \
         echo "[newrelic]"; \
         echo "newrelic.license = ${NEWRELIC_LICENSE}"; \
-        echo "newrelic.daemon.address = ${NEWRELIC_DAEMON_ADDRESS}"; \
         echo "newrelic.application_logging.forwarding.log_level = ERROR"; \
         echo "newrelic.browser_monitoring.auto_instrument = false"; \
     } > /usr/local/etc/php/conf.d/newrelic.ini
+
+    if [ -n "${NEWRELIC_DAEMON_ADDRESS}" ]; then
+        echo "newrelic.daemon.address = ${NEWRELIC_DAEMON_ADDRESS}" >> /usr/local/etc/php/conf.d/newrelic.ini
+    fi
 
     if [ -z "${NEWRELIC_APP_NAME}" ]; then
         if [ -n "${WP_HOME}" ]; then
