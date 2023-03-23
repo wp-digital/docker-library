@@ -120,6 +120,7 @@ ENV WP_CLI_ALLOW_ROOT=1
 
 # install New Relic
 RUN set -eux; \
+    apk add gcompat; \
     curl -o newrelic.tar.gz -L "https://download.newrelic.com/php_agent/archive/${NEWRELIC_PHP_AGENT}/newrelic-php5-${NEWRELIC_PHP_AGENT}-linux.tar.gz"; \
     \
     tar -xzf newrelic.tar.gz -C /tmp; \

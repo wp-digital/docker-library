@@ -12,6 +12,9 @@ on:
         required: true
         default: '10.7.0.319'
 
+env:
+
+
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest

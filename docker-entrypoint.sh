@@ -4,6 +4,7 @@ set -e
 if [ -n "${NEWRELIC_LICENSE}" ] && [ -n "${NEWRELIC_DAEMON_ADDRESS}" ]; then
     { \
         echo "extension = newrelic.so"; \
+        echo "[newrelic]"; \
         echo "newrelic.license = ${NEWRELIC_LICENSE}"; \
         echo "newrelic.daemon.address = ${NEWRELIC_DAEMON_ADDRESS}"; \
         echo "newrelic.application_logging.forwarding.log_level = ERROR"; \
@@ -22,24 +23,6 @@ if [ -n "${NEWRELIC_LICENSE}" ] && [ -n "${NEWRELIC_DAEMON_ADDRESS}" ]; then
     fi
 else
     echo "New Relic license key or daemon address not set. Skipping New Relic setup."
-fi
-
-if [ -n "${COMPOSER_TOKEN}" ]; then
-    composer config -g github-oauth.github.com "${COMPOSER_TOKEN}"
-else
-    echo "Composer token not set. Skipping Composer setup."
-fi
-
-if [ -n "${METABOX_API_KEY}" ]; then
-    composer config -g repositories.metabox\.io composer "https://packages.metabox.io/${METABOX_API_KEY}"
-else
-    echo "metabox.io API key not set. Skipping metabox.io setup."
-fi
-
-if [ -n "${YOAST_TOKEN}" ]; then
-    composer config -g http-basic.my.yoast.com token "${YOAST_TOKEN}"
-else
-    echo "Yoast token not set. Skipping Yoast Premium setup."
 fi
 
 exec "$@"
