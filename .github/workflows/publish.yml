@@ -11,6 +11,10 @@ on:
         description: 'New Relic PHP agent'
         required: true
         default: '10.7.0.319'
+      version:
+        description: 'Version'
+        required: true
+        default: 'latest'
 
 jobs:
   build-and-push-image:
@@ -35,7 +39,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}/php:${{ github.event.inputs.PHPVersion }}-newrelic-${{ github.event.inputs.NewRelicPHPAgent }}:latest
+          tags: ghcr.io/${{ github.repository }}/php-${{ github.event.inputs.PHPVersion }}-newrelic-${{ github.event.inputs.NewRelicPHPAgent }}:${{ github.event.inputs.version }}
           build-args: |
             PHP_VERSION=${{ github.event.inputs.PHPVersion }}
             NEWRELIC_PHP_AGENT=${{ github.event.inputs.NewRelicPHPAgent }}
